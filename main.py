@@ -1,24 +1,37 @@
 def getButton():
     while True:
         if input.button_is_pressed(Button.B):
+            music.play(music.string_playable("E ", 500),
+                                                                    music.PlaybackMode.UNTIL_DONE)
             return 3
         elif input.logo_is_pressed():
+            music.play(music.string_playable("C ", 500),
+                                                    music.PlaybackMode.UNTIL_DONE)
             return 1
         elif input.button_is_pressed(Button.A):
+            music.play(music.string_playable("D ", 500),
+                                                            music.PlaybackMode.UNTIL_DONE)
             return 2
         elif input.is_gesture(Gesture.SHAKE):
+            music.play(music.string_playable("B ", 500),
+                                            music.PlaybackMode.UNTIL_DONE)
             return 0
     return -1
 def Show(num: number):
     if num == 0:
+        music.play(music.string_playable("B ", 500),
+                                music.PlaybackMode.UNTIL_DONE)
         basic.show_leds("""
-            . . # . .
-            . . # . .
-            # . # . #
-            . # # # .
-            . . # . .
+            . . . . .
+            . . # # #
+            . . . # #
+            . . # . #
+            . # . . .
             """)
+            
     elif num == 1:
+        music.play(music.string_playable("C ", 500),
+                                        music.PlaybackMode.UNTIL_DONE)
         basic.show_leds("""
             . . # . .
             . # # # .
@@ -27,6 +40,8 @@ def Show(num: number):
             . . # . .
             """)
     elif num == 2:
+        music.play(music.string_playable("D ", 500),
+                                                music.PlaybackMode.UNTIL_DONE)
         basic.show_leds("""
             . . # . .
             . # . . .
@@ -35,6 +50,8 @@ def Show(num: number):
             . . # . .
             """)
     elif num == 3:
+        music.play(music.string_playable("E ", 500),
+                                                        music.PlaybackMode.UNTIL_DONE)
         basic.show_leds("""
             . . # . .
             . . . # .
@@ -44,82 +61,7 @@ def Show(num: number):
             """)
     else:
         basic.show_string("ERRRRRR")
-def GAMEMME():
-    global direction, score, time, hp
-    direction = 0
-    score = 0
-    time = 1000
-    hp = 3
-    while hp > 0:
-        direction2 = 0
-        direction = randint(0, 2)
-        if direction2 == 0:
-            basic.show_leds("""
-                . . # . .
-                . # # # .
-                # . # . #
-                . . # . .
-                . . # . .
-                """)
-            basic.pause(time)
-            if input.logo_is_pressed():
-                time += -50
-                score += 1
-                basic.show_leds("""
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    """)
-            else:
-                hp += -1
-                time += -50
-        if direction == 1:
-            basic.show_leds("""
-                . . # . .
-                . # . . .
-                # # # # #
-                . # . . .
-                . . # . .
-                """)
-            basic.pause(time)
-            if input.button_is_pressed(Button.A):
-                time += -50
-                score += 1
-                basic.show_leds("""
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    """)
-            else:
-                hp += -1
-                time += -50
-        if direction == 2:
-            basic.show_leds("""
-                . . # . .
-                . . . # .
-                # # # # #
-                . . . # .
-                . . # . .
-                """)
-            basic.pause(time)
-            if input.button_is_pressed(Button.B):
-                time += -50
-                score += 1
-                basic.show_leds("""
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    """)
-            else:
-                hp += -1
-                time += -50
-    basic.show_number(score)
+        
 State = 0
 hp = 0
 time = 1000
@@ -129,6 +71,7 @@ list2: List[number] = []
 score = 0
 
 def on_forever():
+    
     global score, State, time
     while State == 0:
         list2.append(randint(0, 3))
@@ -158,6 +101,7 @@ def on_forever():
                 basic.clear_screen()
             else:
                 State = -1
+
                 basic.show_leds("""
                     # . . . #
                     . . . . .
@@ -173,5 +117,12 @@ def on_forever():
         
         
         basic.pause(100)
-    basic.show_number(score)
+    while(not(input.is_gesture(Gesture.SHAKE))):
+        basic.show_number(score)
+    
+    State = 0
+    music.play(music.string_playable("A B C D ", 500), music.PlaybackMode.UNTIL_DONE)
+    score = 0
+    for i in range (list2.length +1) :
+        list2.pop()
 basic.forever(on_forever)

@@ -1,12 +1,16 @@
 function getButton(): number {
     while (true) {
         if (input.buttonIsPressed(Button.B)) {
+            music.play(music.stringPlayable("E ", 500), music.PlaybackMode.UntilDone)
             return 3
         } else if (input.logoIsPressed()) {
+            music.play(music.stringPlayable("C ", 500), music.PlaybackMode.UntilDone)
             return 1
         } else if (input.buttonIsPressed(Button.A)) {
+            music.play(music.stringPlayable("D ", 500), music.PlaybackMode.UntilDone)
             return 2
         } else if (input.isGesture(Gesture.Shake)) {
+            music.play(music.stringPlayable("B ", 500), music.PlaybackMode.UntilDone)
             return 0
         }
         
@@ -16,14 +20,16 @@ function getButton(): number {
 
 function Show(num: number) {
     if (num == 0) {
+        music.play(music.stringPlayable("B ", 500), music.PlaybackMode.UntilDone)
         basic.showLeds(`
-            . . # . .
-            . . # . .
-            # . # . #
-            . # # # .
-            . . # . .
+            . . . . .
+            . . # # #
+            . . . # #
+            . . # . #
+            . # . . .
             `)
     } else if (num == 1) {
+        music.play(music.stringPlayable("C ", 500), music.PlaybackMode.UntilDone)
         basic.showLeds(`
             . . # . .
             . # # # .
@@ -32,6 +38,7 @@ function Show(num: number) {
             . . # . .
             `)
     } else if (num == 2) {
+        music.play(music.stringPlayable("D ", 500), music.PlaybackMode.UntilDone)
         basic.showLeds(`
             . . # . .
             . # . . .
@@ -40,6 +47,7 @@ function Show(num: number) {
             . . # . .
             `)
     } else if (num == 3) {
+        music.play(music.stringPlayable("E ", 500), music.PlaybackMode.UntilDone)
         basic.showLeds(`
             . . # . .
             . . . # .
@@ -51,98 +59,6 @@ function Show(num: number) {
         basic.showString("ERRRRRR")
     }
     
-}
-
-function GAMEMME() {
-    let direction2: number;
-    
-    direction = 0
-    score = 0
-    time = 1000
-    hp = 3
-    while (hp > 0) {
-        direction2 = 0
-        direction = randint(0, 2)
-        if (direction2 == 0) {
-            basic.showLeds(`
-                . . # . .
-                . # # # .
-                # . # . #
-                . . # . .
-                . . # . .
-                `)
-            basic.pause(time)
-            if (input.logoIsPressed()) {
-                time += -50
-                score += 1
-                basic.showLeds(`
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    `)
-            } else {
-                hp += -1
-                time += -50
-            }
-            
-        }
-        
-        if (direction == 1) {
-            basic.showLeds(`
-                . . # . .
-                . # . . .
-                # # # # #
-                . # . . .
-                . . # . .
-                `)
-            basic.pause(time)
-            if (input.buttonIsPressed(Button.A)) {
-                time += -50
-                score += 1
-                basic.showLeds(`
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    `)
-            } else {
-                hp += -1
-                time += -50
-            }
-            
-        }
-        
-        if (direction == 2) {
-            basic.showLeds(`
-                . . # . .
-                . . . # .
-                # # # # #
-                . . . # .
-                . . # . .
-                `)
-            basic.pause(time)
-            if (input.buttonIsPressed(Button.B)) {
-                time += -50
-                score += 1
-                basic.showLeds(`
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    `)
-            } else {
-                hp += -1
-                time += -50
-            }
-            
-        }
-        
-    }
-    basic.showNumber(score)
 }
 
 let State = 0
@@ -199,5 +115,13 @@ basic.forever(function on_forever() {
         
         basic.pause(100)
     }
-    basic.showNumber(score)
+    while (!input.isGesture(Gesture.Shake)) {
+        basic.showNumber(score)
+    }
+    State = 0
+    music.play(music.stringPlayable("A B C D ", 500), music.PlaybackMode.UntilDone)
+    score = 0
+    for (let i = 0; i < list2.length + 1; i++) {
+        _py.py_array_pop(list2)
+    }
 })
